@@ -1,0 +1,19 @@
+﻿@inherits RazorEngine.Templating.HtmlTemplateBase<Fanstatic.Engine.Processors.Posts.Post>
+
+@{
+    Layout = "_layouts/Master";
+}
+
+<h1>@Model.Title</h1>
+
+<p>
+    published at @Model.PublishDate
+    @foreach (var tag in Model.Tags)
+    {
+        <a href="tags/@tag">@tag</a>
+    }
+</p>
+
+<div id="post_content">
+    @Raw(Model.HtmlContent)
+</div>
