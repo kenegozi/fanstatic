@@ -61,7 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="site.config.json" />
     <None Include="packages.config" />
+    <None Include="_copy\web.config" />
     <None Include="_layouts\Master.cshtml" />
     <None Include="_posts\2006-01-30-blog-announcement.markdown" />
     <None Include="_posts\2006-01-31-hello-world.markdown" />
@@ -74,6 +76,23 @@
       <Project>{A49E8085-5BD7-4445-8454-6F05E8799D08}</Project>
       <Name>fanstatic.Engine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="_copy\assets\css\bootstrap.css" />
+    <Content Include="_copy\assets\css\main.css" />
+    <Content Include="_copy\assets\img\eye-in-the-sky-1920.jpg" />
+    <Content Include="_copy\assets\img\eye-in-the-sky-full.jpg" />
+    <Content Include="_copy\assets\img\Ken.jpg" />
+    <Content Include="_copy\assets\img\rattlesnake-1440.jpg" />
+    <Content Include="_copy\assets\img\rattlesnake-1920.jpg" />
+    <Content Include="_copy\assets\img\rattlesnake-900.jpg" />
+    <Content Include="_copy\assets\img\rattlesnake-full.jpg" />
+    <Content Include="_copy\assets\img\snow-1920.jpg" />
+    <Content Include="_copy\assets\img\snow-full.jpg" />
+    <Content Include="_copy\assets\js\bootstrap.min.js" />
+    <Content Include="_copy\assets\js\jquery.localScroll.min.js" />
+    <Content Include="_copy\assets\js\loop.min.js" />
+    <Content Include="_copy\assets\js\looper.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

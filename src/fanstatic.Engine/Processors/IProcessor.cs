@@ -9,15 +9,16 @@ namespace Fanstatic.Engine.Processors
 
     public interface IGeneratorSettings
     {
-        string RootDirectory { get; }
+        string Title { get; }
+        string Root { get; set; }
     }
 
     public interface IProcessor
     {
         string ProcessorKey { get; }        
 
-        void ExecuteFirstPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors);
+        void ExecuteFirstPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors);
 
-        void ExecuteSecondPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors);
+        void ExecuteSecondPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors);
     }
 }

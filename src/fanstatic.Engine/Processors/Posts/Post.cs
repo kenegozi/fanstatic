@@ -55,7 +55,7 @@ namespace Fanstatic.Engine.Processors.Posts
 
         private void HandlePermalink()
         {
-            var permalink = specificPostSettings.Permalink ?? postsSettings.Permalink ?? "posts/{PublishDate:yyyy}/{slug}";
+            var permalink = specificPostSettings.Permalink ?? postsSettings.Permalink ?? "posts/{PublishDate:yyyy}/{PublishDate:MM}/{PublishDate:dd}/{slug}";
 
             if (permalink.IndexOf('{') > -1)
             {

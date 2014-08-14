@@ -11,7 +11,7 @@ namespace Fanstatic.Engine.Processors.Tags
     {
         private readonly IDictionary<string, IList<Post>> tags = new Dictionary<string, IList<Post>>();
 
-        public override void ExecuteFirstPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors)
+        public override void ExecuteFirstPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors)
         {
             var typedProcessorSettings = processorSettings.ToObject<ITagsProcessorSettings>(JsonSerializer);
 
@@ -20,7 +20,7 @@ namespace Fanstatic.Engine.Processors.Tags
             BuildTags(posts);
         }
 
-        public override void ExecuteSecondPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
+        public override void ExecuteSecondPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
         {
             var typedProcessorSettings = processorSettings.ToObject<ITagsProcessorSettings>(JsonSerializer);
             var permalinkFormat = typedProcessorSettings.PermalinkTemplate ?? "tags/{tag}";

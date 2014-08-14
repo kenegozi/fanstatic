@@ -1,19 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Fanstatic.Engine.Processors.Tags;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 
 namespace Fanstatic.Engine.Processors.Posts
 {
+    public class CopyProcessor : Processor
+    {
+        public interface ICopyProcessorSettings
+        {
+            string[] Items { get; } 
+        }
+
+        static bool IsDirectory(string path)
+        {
+            return (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+        }
+
+        public override void ExecuteSecondPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
+        {
+            var settings = processorSettings.ToObject<ICopyProcessorSettings>(JsonSerializer);
+            if (settings.Items == null)
+            {
+                return;
+            }
+            if (settings.Items.Length == 0)
+            {
+                return;
+            }
+            var targetRoot = Path.Combine(globalSettings.Root, "wwwroot");
+            foreach (var item in settings.Items)
+            {
+                var itemPath = Path.Combine(globalSettings.Root, item);
+                if (Directory.Exists(itemPath))
+                {
+                    foreach (var sourcePath in Directory.EnumerateFileSystemEntries(itemPath, "*", SearchOption.AllDirectories))
+                    {
+                        var targetPath = Path.Combine(targetRoot, sourcePath.Substring(itemPath.Length).Trim('\\'));
+                        if (IsDirectory(sourcePath))
+                        {
+                            Directory.CreateDirectory(targetPath);
+                            Console.WriteLine("Created directory "+targetPath);
+                        }
+                        else
+                        {
+                            File.Copy(sourcePath, targetPath, true);
+                            Console.WriteLine("copied file " + targetPath);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public class AtomProcessor : Processor
+    {
+
+    }
+    public class SitemapProcessor : Processor
+    {
+
+    }
+    public class ArchiveProcessor : Processor
+    {
+
+    }
+    public class PagesProcessor : Processor
+    {
+
+    }
+
     public class PostsProcessor : Processor
     {
         private readonly IList<Post> posts = new List<Post>();
         const string DefaultPostsLocation = "_posts";
             
-        public override void ExecuteFirstPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors)
+        public override void ExecuteFirstPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors)
         {
             var typedProcessorSettings = processorSettings.ToObject<IPostsProcessorSettings>(JsonSerializer);
             var locationItem = typedProcessorSettings.Location ?? DefaultPostsLocation;
@@ -21,7 +87,7 @@ namespace Fanstatic.Engine.Processors.Posts
             var postsFolder = locationItem;
             if (!Path.IsPathRooted(locationItem))
             {
-                postsFolder = Path.Combine(globalSettings.RootDirectory, postsFolder);
+                postsFolder = Path.Combine(globalSettings.Root, postsFolder);
             }
 
             var inputFiles = Directory.EnumerateFiles(postsFolder, "*.markdown", SearchOption.AllDirectories);
@@ -47,7 +113,7 @@ namespace Fanstatic.Engine.Processors.Posts
             }
          }
 
-        public override void ExecuteSecondPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
+        public override void ExecuteSecondPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
         {
             var typedProcessorSettings = processorSettings.ToObject<IPostsProcessorSettings>(JsonSerializer);
             var tags = processors.OfType<TagsProcessor>().Single().GetTags();
@@ -55,7 +121,7 @@ namespace Fanstatic.Engine.Processors.Posts
             foreach (var post in GetPosts())
             {
                 var target = post.Permalink.Replace('/', '\\');
-                target = Path.Combine(globalSettings.RootDirectory, "wwwroot", target);
+                target = Path.Combine(globalSettings.Root, "wwwroot", target);
                 Directory.CreateDirectory(target);
                 var tarfetFile = Path.Combine(target, "index.html");
                 var result = RazorEngine.Razor.Run("_posts/Post", post);

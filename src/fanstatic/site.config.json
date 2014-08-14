@@ -1,0 +1,30 @@
+﻿{
+    "title": "Ken Egozi",
+    "rootUrl": "http://kenegozi.com",
+    "author": "Ken Egozi",
+    "email": "blog@kenegozi.com",
+    "outputRoot": "wwwroot",
+    "processors": {
+        "posts": {
+            "permalink": "blog/{date:yyyy}/{date:MM}/{date:dd}/{slug}"
+        },
+        "copy": {
+            "items": [
+                "_copy"
+            ]
+        },
+        "atom": {
+            "target": "atom.xml"
+        },
+        "sitemap": {
+            "target": "sitemap.xml"
+        },
+        "tags": {
+            "permalink": "blog/tags/{tag}"
+        },
+        "archive": {
+            "permalink": "blog/archive/{date:yyyy}/{date:MM}"
+        },
+        "pages": { },
+    }
+}

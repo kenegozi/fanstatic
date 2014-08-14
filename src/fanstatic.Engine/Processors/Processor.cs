@@ -15,12 +15,12 @@ namespace Fanstatic.Engine.Processors
             serializer.Converters.Add(new JsonInterfaceConverter());
             JsonSerializer = serializer;
         }
-        public virtual void ExecuteFirstPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors)
+        public virtual void ExecuteFirstPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> previousProcessors)
         {
             
         }
 
-        public virtual void ExecuteSecondPass(JObject processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
+        public virtual void ExecuteSecondPass(JToken processorSettings, IGeneratorSettings globalSettings, IList<IProcessor> processors)
         {
 
         }
